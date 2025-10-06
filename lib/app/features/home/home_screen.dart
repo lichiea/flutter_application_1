@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../widgets/content_card.dart';
+import 'package:flutter_application_1/app/app.dart';
+import '../../widgets/card_of_service.dart';
 import '../../extensions/widget_extensions.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Главная')),
+      appBar: AppBar(title: Text('Услуга №N')),
       
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
@@ -22,14 +23,14 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Услуги',
+              '<- Список услуг',
               style: Theme.of(context).textTheme.headlineLarge,
             ),
             ListView.separated(
               primary: false,
               shrinkWrap: true,
-              itemCount: 10,
-              itemBuilder: (_, __) => ContentCard(),
+              itemCount: 1,
+              itemBuilder: (_, __) => CardOfService(),
               separatorBuilder: (_, __) => 16.ph,
             ),
           ],
