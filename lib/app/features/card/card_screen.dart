@@ -64,7 +64,7 @@ class _CardScreenState extends State<CardScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Индекс качества воздуха #${widget.contentId}',
+            'Индекс качества воздуха #${(int.parse(widget.contentId) + 1).toString()}',
             style: Theme.of(context).textTheme.headlineLarge,
           ),
           // Выводим координаты если есть
