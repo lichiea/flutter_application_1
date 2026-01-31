@@ -3,20 +3,25 @@ import 'package:flutter_application_1/app/app.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class CardScreen extends StatefulWidget {
+  final String contentId;
+  const CardScreen({
+    super.key,
+    required this.contentId,
+  });
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<CardScreen> createState() => _CardScreenState();
+
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  final _home = GetIt.I<HomeBloc>();
-  void loadHome() => _home.add(HomeLoad());
+class _CardScreenState extends State<CardScreen> {
+  final _card = GetIt.I<CardBloc>();
+  void loadCard() => _card.add(CardLoad());
 
   @override
   void initState() {
-    loadHome();
+    loadCard();
     super.initState();
   }
 
@@ -24,25 +29,25 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Индекс качества воздуха')),
-      body: BlocBuilder<HomeBloc, HomeState>(
-        bloc: _home,
+      body: BlocBuilder<CardBloc, CardState>(
+        bloc: _card,
         builder: (context, state) {
           return switch (state) {
-            HomeInitial() => _buildHomeInitial(),
-            HomeLoadInProgress() => _buildHomeLoadInProgress(),
-            HomeLoadSuccess() => _buildHomeLoadSuccess(state),
-            HomeLoadFailure() => _buildHomeLoadFailure(state),
+            CardInitial() => _buildCardInitial(),
+            CardLoadInProgress() => _buildCardLoadInProgress(),
+            CardLoadSuccess() => _buildCardLoadSuccess(state),
+            CardLoadFailure() => _buildCardLoadFailure(state),
           };
         },
       ),
     );
   }
 
-  Widget _buildHomeInitial() => SizedBox.shrink();
+  Widget _buildCardInitial() => SizedBox.shrink();
 
-  Widget _buildHomeLoadInProgress() => AppProgressIndicator();
+  Widget _buildCardLoadInProgress() => AppProgressIndicator();
 
-  Widget _buildHomeLoadSuccess(HomeLoadSuccess state) {
+  Widget _buildCardLoadSuccess(CardLoadSuccess state) {
     final content = state.content;
 
     // Проверяем наличие данных
@@ -59,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Список индексов качества воздуха',
+            'Индекс качества воздуха #${(int.parse(widget.contentId) + 1).toString()}',
             style: Theme.of(context).textTheme.headlineLarge,
           ),
           // Выводим координаты если есть
@@ -70,18 +75,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Colors.grey[600],
               ),
             ),
-          // Выводим общее количество записей
-          Text(
-            'Найдено записей: ${content.list!.length}',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
           ListView.separated(
             primary: false,
             shrinkWrap: true,
-            itemCount: content.list!.length,
-            itemBuilder: (_, index) => ContentCard(
+            itemCount: 1,
+            itemBuilder: (_, index) => CardOfService(
               content: content,
-              index: index,
+              index: int.parse(widget.contentId),
             ),
             separatorBuilder: (_, __) => 16.ph,
           ),
@@ -90,10 +90,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildHomeLoadFailure(HomeLoadFailure state) {
+  Widget _buildCardLoadFailure(CardLoadFailure state) {
     return AppError(
       description: state.exception.toString(),
-      onTap: () => loadHome(),
+      onTap: () => loadCard(),
     );
   }
 }
