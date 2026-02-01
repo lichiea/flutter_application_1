@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/app.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_application_1/app/features/auth/bloc/auth_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,7 +24,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Индекс качества воздуха')),
+      appBar: AppBar(
+        title: Text('Индекс качества воздуха'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              // Выход через BLoC
+              context.read<AuthBloc>().add(AuthLogoutRequested());
+              // GoRouter автоматически перенаправит на /login благодаря redirect
+            },
+          ),
+        ],
+      ),
       body: BlocBuilder<HomeBloc, HomeState>(
         bloc: _home,
         builder: (context, state) {
@@ -45,7 +58,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildHomeLoadSuccess(HomeLoadSuccess state) {
     final content = state.content;
 
-    // Проверяем наличие данных
     if (content.list == null || content.list!.isEmpty) {
       return Center(
         child: Text('Нет данных'),
@@ -55,14 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return SingleChildScrollView(
       padding: EdgeInsets.all(16),
       child: Column(
-        spacing: 20,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Список индексов качества воздуха',
             style: Theme.of(context).textTheme.headlineLarge,
           ),
-          // Выводим координаты если есть
           if (content.coord != null && content.coord!.lat != null && content.coord!.lon != null)
             Text(
               'Координаты: ${content.coord!.lat!.toStringAsFixed(2)}, ${content.coord!.lon!.toStringAsFixed(2)}',
@@ -70,11 +80,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Colors.grey[600],
               ),
             ),
-          // Выводим общее количество записей
+          SizedBox(height: 16),
           Text(
             'Найдено записей: ${content.list!.length}',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
+          SizedBox(height: 16),
           ListView.separated(
             primary: false,
             shrinkWrap: true,
@@ -83,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
               content: content,
               index: index,
             ),
-            separatorBuilder: (_, __) => 16.ph,
+            separatorBuilder: (_, __) => SizedBox(height: 16),
           ),
         ],
       ),
