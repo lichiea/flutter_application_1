@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/auth_setup.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_1/app/features/auth/bloc/auth_bloc.dart';
 import 'package:flutter_application_1/app/features/auth/signup_screen.dart';

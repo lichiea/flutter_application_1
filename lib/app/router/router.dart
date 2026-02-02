@@ -1,13 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:go_router/go_router.dart';
 import '../features/features.dart';
 import '../../di/di.dart';
-import '../features/auth/bloc/auth_bloc.dart';
-import '../../domain/services/auth/auth_service.dart';
 
 final _rootNavigationKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
@@ -45,7 +41,7 @@ final router = GoRouter(
     final currentPath = state.uri.path;
     final isLoginPage = currentPath == '/login';
     final isSignupPage = currentPath == '/signup';
-    final isHomePage = currentPath == '/home' || currentPath == '/';
+    //final isHomePage = currentPath == '/home' || currentPath == '/';
 
     // Если пользователь не аутентифицирован и пытается получить доступ к защищенной странице
     if (!isAuthenticated && !isLoginPage && !isSignupPage) {
@@ -96,6 +92,13 @@ final router = GoRouter(
       pageBuilder: (_, state) => MaterialPage(
         key: state.pageKey,
         child: const SignupScreen(),
+      ),
+    ),
+    GoRoute(
+      path: '/favorites',
+      pageBuilder: (_, state) => MaterialPage(
+        key: state.pageKey,
+        child: const FavoritesScreen(),
       ),
     ),
     GoRoute(

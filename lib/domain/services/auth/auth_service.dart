@@ -1,13 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-abstract class AuthServiceInterface {
-  Future<void> signUp({required String email, required String password});
-  Future<void> logIn({required String email, required String password});
-  Future<void> logOut();
-}
-
-class AuthService extends AuthServiceInterface {
-  @override
+class AuthService {
   Future<void> signUp({
     required String email,
     required String password,
@@ -22,7 +15,6 @@ class AuthService extends AuthServiceInterface {
     }
   }
 
-  @override
   Future<void> logIn({
     required String email,
     required String password,
@@ -37,7 +29,6 @@ class AuthService extends AuthServiceInterface {
     }
   }
 
-  @override
   Future<void> logOut() async {
     try {
       await FirebaseAuth.instance.signOut();
