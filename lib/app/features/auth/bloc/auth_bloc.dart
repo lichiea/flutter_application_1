@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-//import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/domain/services/auth/auth_service.dart';
@@ -9,7 +8,7 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthService authService;
+  final AuthService authService; // Конкретный тип
   StreamSubscription<User?>? _authSubscription;
 
   AuthBloc({required this.authService}) : super(AuthInitial()) {

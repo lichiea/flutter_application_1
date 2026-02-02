@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/app.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_application_1/app/features/auth/bloc/auth_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,11 +28,16 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('Индекс качества воздуха'),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.favorite),
             onPressed: () {
-              // Выход через BLoC
+              context.push('/favorites');
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
               context.read<AuthBloc>().add(AuthLogoutRequested());
-              // GoRouter автоматически перенаправит на /login благодаря redirect
+              context.push('/login');
             },
           ),
         ],
